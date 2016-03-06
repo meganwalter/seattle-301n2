@@ -32,7 +32,8 @@ articleView.handleAuthorFilter = function() {
       $('article').hide();
       $('article').filter('article[data-author ="' + $(this).val() + '"]').fadeIn(500);
     } else {
-      $('article').filter(!'article[class="template"]').fadeIn(500);
+      $('article').fadeIn(500);
+      $('article.template').hide();
     }
 
     $('#category-filter').val('');
@@ -45,7 +46,8 @@ articleView.handleCategoryFilter = function() {
       $('article').hide();
       $('article').filter('article[data-category="' + $(this).val() + '"]').fadeIn(500);
     } else {
-      $('article').filter(!'article[class="template"]').fadeIn(500);
+      $('article').fadeIn(500);
+      $('article.template').hide();
     }
 
     $('#author-filter').val('');
@@ -63,31 +65,34 @@ articleView.handleMainNav = function() {
   $('.main-nav').on('click', 'li', function() {
     if ($(this).attr('data-content') === 'articles') {
       $('.tab-content').hide();
-      $('article').filter(!'.template').fadeIn(500);
+      $('#articles').fadeIn(500);
     } else if ($(this).attr('data-content') === 'about') {
       $('.tab-content').hide();
       $('#about').fadeIn(500);
     }
   }/* CODE GOES HERE */);
 
-  // $('.main-nav .tab:first').click(); // Let's now trigger a click on the first .tab element, to set up the page.
+  $('.main-nav .tab:first').click(); // Let's now trigger a click on the first .tab element, to set up the page.
 };
 
 articleView.setTeasers = function() {
   $('.article-body *:nth-of-type(n+2)').hide(); // Hide elements beyond the first 2 in any artcile body.
-
-  // TODO: Add an event handler to reveal all the hidden elements,
-  //       when the .read-on link is clicked. You can go ahead and hide the
-  //       "Read On" link once it has been clicked. Be sure to prevent the default link-click action!
-  //       Ideally, we'd attach this as just 1 event handler on the #articles section, and let it
-  //       process any .read-on clicks that happen within child nodes.
+  $('#articles').on('click', function(ev) {
+    var $evTarget = $(ev.target);
+    ev.preventDefault();
+    if ($evTarget.hasClass('read-on')) {
+      $evTarget.prev().children().show();
+      $evTarget.hide();
+    }
+  });
 
 };
 
 // TODO: Call all of the above functions, once we are sure the DOM is ready.
-$(document).ready(function(){
+$(document).ready(function() {
   articleView.populateFilters();
   articleView.handleAuthorFilter();
   articleView.handleCategoryFilter();
   articleView.handleMainNav();
+  articleView.setTeasers();
 })
