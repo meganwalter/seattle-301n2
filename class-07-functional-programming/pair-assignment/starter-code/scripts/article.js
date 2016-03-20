@@ -71,15 +71,13 @@
 
 // DONE: Chain together a `map` and a `reduce` call to produce an array of unique author names.
   Article.allAuthors = function() {
-    Article.all.map(function(article) {
-      return {
-        author: article.author,
-      }; // Don't forget to read the docs on map and reduce!
-    }).reduce(function(total, article) {
-      if (indexOf(total[article.author]) === -1) {
-        total.push(article.author);
+    return Article.all.map(function(article) {
+      return article.author;
+ // Don't forget to read the docs on map and reduce!
+    }).reduce(function(total, author) {
+      if (total.indexOf(author) === -1) {
+        total.push(author);
       }
-
       return total;
     }, []);
   };
@@ -89,9 +87,9 @@
   // the author's name, and one for the total number of words across all articles written by the specified author.
     return Article.allAuthors().map(function(author) {
       return {
-        author: author.author,
+        author: author,
         numWords: Article.all.filter(function(article) {
-          return article.author === author.author;
+          return article.author === author;
         })
         .map(function(articlesBy) {
           return articlesBy.body.split(' ').length;
@@ -102,7 +100,6 @@
       };
     });
   };
-  module.fetchAll(x){
-    Article.fetchAll(x);
-  }
+  module.fetchAll =  Article.fetchAll;
+  module.Article = Article;
 })(window);
