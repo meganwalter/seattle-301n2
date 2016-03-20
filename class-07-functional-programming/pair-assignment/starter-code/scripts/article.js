@@ -102,4 +102,7 @@
       };
     });
   };
+  module.fetchAll(x){
+    Article.fetchAll(x);
+  }
 })(window);
