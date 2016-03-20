@@ -71,16 +71,18 @@
   });
   };
 
-// TODO: Chain together a `map` and a `reduce` call to produce an array of unique author names.
+// DONE: Chain together a `map` and a `reduce` call to produce an array of unique author names.
   Article.allAuthors = function() {
     Article.all.map(function(article) {
       return {
         author: article.author,
       }; // Don't forget to read the docs on map and reduce!
     }).reduce(function(total, article) {
-      if(indexOf(article.author) === -1) {
-        return total.push(article.author);
+      if (indexOf(total[article.author]) === -1) {
+        total.push(article.author);
       }
+
+      return total;
     }, []);
   };
 
