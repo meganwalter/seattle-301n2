@@ -22,7 +22,7 @@
   // TODONE: Set up a DB table for articles.
   Article.createTable = function(callback) {
     webDB.execute(
-      'CREATE TABLE IF NOT EXISTS myArticles (id, title, category, author, authorUrl, publishedOn, body);'
+      'CREATE TABLE IF NOT EXISTS myArticles (id INTEGER PRIMARY KEY, title TEXT, category TEXT, author TEXT, authorUrl TEXT, publishedOn DATETIME, body TEXT);'
     ,
       function(result) {
         console.log('Successfully set up the articles table.', result);
@@ -35,8 +35,8 @@
   Article.truncateTable = function(callback) {
     webDB.execute(
      [
-      {'sql': 'DELETE FROM myArticles'}
-     ]
+      {'sql': 'DELETE * FROM myArticles'}
+    ],
       callback
     );
   };
@@ -47,8 +47,8 @@
     webDB.execute(
       [
         {
-          'sql': 'INSERT INTO myArticles (title, category, author, authorUrl, publishedOn, body) VALUES (?,?,?,?,?,?);',
-          'data': [this.title, this.category, this.author, this.authorUrl, this.publishedOn, this.body]
+          'sql': 'INSERT INTO myArticles (id, title, category, author, authorUrl, publishedOn, body) VALUES (?,?,?,?,?,?);',
+          'data': [this.id, this.title, this.category, this.author, this.authorUrl, this.publishedOn, this.body]
         }
       ],
       callback
@@ -61,7 +61,7 @@
       [
         {
           'sql':'DELETE FROM myArticles WHERE id=?;',
-
+          'data': [this.id]
         }
       ],
       callback
@@ -70,10 +70,11 @@
 
   // TODO: Update an article instance, overwriting it's properties into the corresponding record in the database:
   Article.prototype.updateRecord = function(callback) {
+    console.log(this.id);
     webDB.execute(
       [
-        {'sql':'UPDATE myArticles SET title=?, category=?, author=?, authorUrl=?, publishedOn=?, body=? WHERE id=?'
-        'data':[this.title, this.category, this.author, this.authorUrl, this.publishedOn, this.body]}
+        {'sql':'SELECT id=? UPDATE myArticles SET title=?, category=?, author=?, authorUrl=?, publishedOn=?, body=?;',
+        'data':[this.id, this.title, this.category, this.author, this.authorUrl, this.publishedOn, this.body]}
       ],
       callback
     );
@@ -98,7 +99,7 @@
 
       } else {
         $.getJSON('/data/hackerIpsum.json', function(rawData) {
-          // Cache the json, so we don't need to request it next time:
+          Article.loadAll();// Cache the json, so we don't need to request it next time:
           rawData.forEach(function(item) {
             var article = new Article(item); // Instantiate an article based on item from JSON
             // Cache the newly-instantiated article in DB:
