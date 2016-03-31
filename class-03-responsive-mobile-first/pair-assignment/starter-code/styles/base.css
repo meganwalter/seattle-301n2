@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+/* TODO: Add a rule for images, so they never exceed their container's width. */
+
+>>>>>>> 71ba0cdfa77a7ef2068f7b56f7d520afedc54ecf
 img {
   max-width: 100%;
 }
