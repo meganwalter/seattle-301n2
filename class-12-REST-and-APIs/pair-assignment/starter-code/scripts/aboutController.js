@@ -2,10 +2,12 @@
   var aboutController = {};
 
   aboutController.index = function() {
-    // REVIEW: Look at this method chaning. What is being accomplished here?
+    // REVIEW: Look at this method chaining. What is being accomplished here?
     $('#about').show().siblings().hide();
+    repos.requestRepos(repoView.index);
 
-    // TODO: Call a function to 'request' our repo data.
+
+    // TODONE: Call a function to 'request' our repo data.
     // Pass in a view function as a callback, so our repos will render after the data is loaded.
   };
 
