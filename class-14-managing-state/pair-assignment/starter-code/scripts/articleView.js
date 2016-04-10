@@ -12,7 +12,8 @@
     return template(article);
   };
 
-  // COMMENT: What does this method do?  What is it's execution path?
+  // DONE: What does this method do?  What is it's execution path?
+  //Answer: This function is compiling a handlebars template for the select element in the HTML page.
   articleView.populateFilters = function() {
     var options,
       template = Handlebars.compile($('#option-template').text());
@@ -37,7 +38,8 @@
     });
   };
 
-  // COMMENT: What does this method do?  What is it's execution path?
+  // DONE: What does this method do?  What is it's execution path?
+  //Answer: If the user changes the author or category filter, a path to page.js is created by concatenating the values.
   articleView.handleFilters = function() {
     $('#filters').one('change', 'select', function() {
       resource = this.id.replace('-filter', '');
@@ -117,7 +119,8 @@
     $('#article-json').val(JSON.stringify(article) + ',');
   };
 
-  // COMMENT: What does this method do?  What is it's execution path?
+  // DONE: What does this method do?  What is it's execution path?
+  //Answer: articleView.index is showing the selected element, while hiding the siblings. The second half of the function is removing and re-rendering the articles through the template via the render function. The function is run on load.
   articleView.index = function(articles) {
     $('#articles').show().siblings().hide();
 
@@ -127,7 +130,8 @@
     });
 
     articleView.populateFilters();
-    // COMMENT: What does this method do?  What is it's execution path?
+    // DONE: What does this method do?  What is it's execution path?
+    //Answer: This is where handlefilters and populateFilters function are called inside of the IIFE, locally scoped.
     articleView.handleFilters();
 
     // DONE: Replace setTeasers with just the truncation logic, if needed:
